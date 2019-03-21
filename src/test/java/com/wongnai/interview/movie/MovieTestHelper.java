@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import com.wongnai.interview.movie.Movie;
-
 public class MovieTestHelper {
 	public static List<String> toMovieNames(Collection<Movie> movies) {
 		List<String> names = new ArrayList<>();

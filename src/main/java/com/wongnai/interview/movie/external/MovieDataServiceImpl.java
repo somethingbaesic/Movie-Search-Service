@@ -1,6 +1,5 @@
 package com.wongnai.interview.movie.external;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -17,9 +16,6 @@ public class MovieDataServiceImpl implements MovieDataService {
     public static final String MOVIE_DATA_URL
             = "https://raw.githubusercontent.com/prust/wikipedia-movie-data/master/movies.json";
 
-    @Autowired
-    private RestTemplate restTemplate;
-
     @Override
     public MoviesResponse fetchAll() {
         //TODO:
@@ -27,6 +23,7 @@ public class MovieDataServiceImpl implements MovieDataService {
         // Please noted that you must only read data remotely and only from given source,
         // do not download and use local file or put the file anywhere else.
 
+        RestTemplate restTemplate = new RestTemplate();
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));

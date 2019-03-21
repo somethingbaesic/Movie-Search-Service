@@ -27,6 +27,12 @@ public class Movie {
 	protected Movie() {
 	}
 
+	public Movie(Long id, String name, List<String> actors) {
+		this.id = id;
+		this.name = name;
+		this.actors = actors;
+	}
+
 	public Movie(String name) {
 		this.name = name;
 	}
