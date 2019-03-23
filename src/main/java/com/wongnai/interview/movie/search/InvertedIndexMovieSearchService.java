@@ -35,28 +35,33 @@ public class InvertedIndexMovieSearchService implements MovieSearchService {
         // you have to return can be union or intersection of those 2 sets of ids.
         // By the way, in this assignment, you must use intersection so that it left for just movie id 5.
 
-        List<Movie> movieList = new ArrayList<>();
-        Map<String, Set<Long>> invertedIndexMovies = getInvertedIndex();
-        String[] wordFromQueryText = queryText.toLowerCase().split("\\s+");
+        String[] wordsFromQueryText = queryText.replaceAll("[^a-zA-Z0-9\\s]", "").toLowerCase().split("\\s+");
+        Map<String, Set<Long>> invertedIndex = getInvertedIndex();
 
         List<Set<Long>> setList = new ArrayList<>();
-        boolean hasMatch = true;
+        boolean isAllWordsMatch = true;
 
-        for (String word : wordFromQueryText) {
-            if (invertedIndexMovies.containsKey(word)) {
-                setList.add(invertedIndexMovies.get(word));
-            }
-            else {
-                hasMatch = false;
+        //Listed set of word index. If has at least one word that not match, break out of loop
+        for (String word : wordsFromQueryText) {
+            if (invertedIndex.containsKey(word)) {
+                setList.add(invertedIndex.get(word));
+            } else {
+                isAllWordsMatch = false;
+                break;
             }
         }
 
-        if (hasMatch) {
+        List<Movie> movieList = new ArrayList<>();
+
+        if (isAllWordsMatch) {
             Set<Long> movieId = setList.get(0);
-            for (Set<Long> set : setList) {
-                movieId.retainAll(set);
+
+            //Set Intersection
+            for (int i = 1; i < setList.size(); i++) {
+                movieId.retainAll(setList.get(i));
             }
 
+            //Search movie by Id
             for (Long id : movieId) {
                 movieList.add(movieRepository.findById(id).get());
             }
@@ -71,9 +76,8 @@ public class InvertedIndexMovieSearchService implements MovieSearchService {
         List<Movie> movieList = (List<Movie>) movieRepository.findAll();
 
         for (Movie movie : movieList) {
-            String[] wordFromTitle = movie.getName().split("\\s+");
+            String[] wordFromTitle = movie.getName().replaceAll("[^a-zA-Z0-9\\s]", "").toLowerCase().split("\\s+");
             for (String word : wordFromTitle) {
-                word = word.toLowerCase().replaceAll("[^a-zA-Z]+", "");
                 Set<Long> movieIdSet = new HashSet<>();
                 if (invertedIndex.containsKey(word)) {
                     movieIdSet = invertedIndex.get(word);

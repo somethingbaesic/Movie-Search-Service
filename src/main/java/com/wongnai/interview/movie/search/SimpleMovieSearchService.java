@@ -35,10 +35,10 @@ public class SimpleMovieSearchService implements MovieSearchService {
     private void searchAndParseToMovie(String queryText, List<Movie> movieList) {
         List<MovieData> movieDataList = movieDataService.fetchAll().stream()
                 .filter(title -> title.getTitle().toLowerCase().matches(".*\\b" + queryText.toLowerCase() + "\\b.*")).collect(Collectors.toList());
-        long generatedId = 0;
+        long generateId = 0;
         for (MovieData movieData : movieDataList) {
-            generatedId++;
-            movieList.add(new Movie(generatedId, movieData.getTitle(), movieData.getCast()));
+            generateId++;
+            movieList.add(new Movie(generateId, movieData.getTitle(), movieData.getCast()));
         }
     }
 }

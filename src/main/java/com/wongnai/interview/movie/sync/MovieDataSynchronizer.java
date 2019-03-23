@@ -12,9 +12,6 @@ import org.springframework.stereotype.Component;
 import com.wongnai.interview.movie.MovieRepository;
 import com.wongnai.interview.movie.external.MovieDataService;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 public class MovieDataSynchronizer {
 	@Autowired
@@ -29,10 +26,10 @@ public class MovieDataSynchronizer {
 
 		movieDataService = new MovieDataServiceImpl();
 		MoviesResponse moviesResponse = movieDataService.fetchAll();
-		long generatedId = 0;
+		long generateId = 0;
 		for(MovieData movieData: moviesResponse) {
-		    generatedId++;
-            movieRepository.save(new Movie(generatedId, movieData.getTitle(), movieData.getCast()));
+		    generateId++;
+            movieRepository.save(new Movie(generateId, movieData.getTitle(), movieData.getCast()));
         }
 	}
 }
